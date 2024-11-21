@@ -1,0 +1,37 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.std_logic_unsigned.ALL;
+
+ENTITY pulse_10Hz_enable IS
+PORT
+ (
+	clk, rstn, ena : IN STD_LOGIC;
+	pulse_10Hz : OUT STD_LOGIC
+);
+END pulse_10Hz_enable;
+
+ARCHITECTURE behavioral OF pulse_10Hz_enable IS
+	signal cnt : STD_LOGIC_VECTOR(23 downto 0);
+BEGIN
+
+PROCESS (clk, rstn, ena)
+	BEGIN
+	IF (rstn = '0') THEN
+		cnt <= (OTHERS => '0');
+	ELSIF (clk'EVENT AND clk = '1') THEN
+		IF (ena = '1') THEN
+			IF (cnt = x"FAF07F") THEN -- 4b4c3f(hex) = 4,999,999 (decimal)
+				cnt <= x"000000";
+			ELSE
+				cnt <= cnt + 1;
+		END IF;
+	ELSE
+		cnt <= cnt;
+		END IF; -- clk
+	END IF;
+END PROCESS;
+
+	WITH cnt SELECT
+		pulse_10Hz <= '1' WHEN x"FAF07F",
+		'0' WHEN OTHERS;
+END behavioral;
