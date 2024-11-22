@@ -25,7 +25,7 @@ PROCESS (clk, rstn, ena)
 			ELSE 
 				cnt <= cnt + 1;
 			END IF;
-		END IF;+
+		END IF;
 	ELSE
 		cnt <= cnt;
 	END IF;
