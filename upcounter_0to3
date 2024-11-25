@@ -1,0 +1,64 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.std_logic_unsigned.ALL;
+
+ENTITY upcounter_0to3 IS
+PORT
+ (
+	clk, rstn, ena : IN STD_LOGIC;
+	output : OUT STD_LOGIC_VECTOR(6 downto 0)
+);
+END upcounter_0to3;
+
+ARCHITECTURE behavioral OF upcounter_0to3 IS
+	signal cnt : STD_LOGIC_VECTOR(3 downto 0);
+BEGIN
+
+PROCESS (clk, rstn, ena)
+	BEGIN
+	IF (rstn = '0') THEN
+		cnt <= (OTHERS => '0');
+	ELSIF (clk'EVENT AND clk = '1') THEN
+		IF (ena = '1') THEN
+			IF (cnt = "0011") THEN
+				cnt <= "0000";
+			ELSE 
+				cnt <= cnt + 1;
+			END IF;
+		END IF;
+	ELSE
+		cnt <= cnt;
+	END IF;
+		
+	IF (cnt = "0000") THEN
+		output <= "1111110";
+	ELSIF (cnt = "0001") THEN
+		output <= "0110000";
+	ELSIF (cnt = "0010") THEN
+		output <= "1101101";
+	ELSIF (cnt = "0011") THEN
+		output <= "1111001";
+	ELSIF (cnt = "0100") THEN
+		output <= "0110011";
+	ELSIF (cnt = "0101") THEN
+		output <= "1011011";
+	ELSIF (cnt = "0110") THEN
+		output <= "1011111";
+	ELSIF (cnt = "0111") THEN
+		output <= "1110000";
+	ELSIF (cnt = "1000") THEN
+		output <= "1111111";
+	ELSIF (cnt = "1001") THEN
+		output <= "1111011";
+	ELSE
+		output <= "0000000";
+		
+	END IF; 
+	 
+
+	
+	
+	
+END PROCESS;
+
+END behavioral;
