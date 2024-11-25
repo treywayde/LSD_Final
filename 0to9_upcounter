@@ -6,7 +6,8 @@ ENTITY upcounter_0to9 IS
 PORT
  (
 	clk, rstn, ena : IN STD_LOGIC;
-	output : OUT STD_LOGIC_VECTOR(6 downto 0)
+	output : OUT STD_LOGIC_VECTOR(6 downto 0);
+	n_ena : OUT STD_LOGIC
 );
 END upcounter_0to9;
 
@@ -20,36 +21,41 @@ PROCESS (clk, rstn, ena)
 		cnt <= (OTHERS => '0');
 	ELSIF (clk'EVENT AND clk = '1') THEN
 		IF (ena = '1') THEN
+			cnt <= cnt + 1;
 			IF (cnt = "1001") THEN
 				cnt <= "0000";
 			END IF;
+			
 		END IF;
 	ELSE
 		cnt <= cnt;
 	END IF;
 	
+	n_ena <= '0';
+	
 	IF (cnt = "0000") THEN
-		output <= "1111110";
+		output <= "0000001";
 	ELSIF (cnt = "0001") THEN
-		output <= "0110000";
+		output <= "1001111";
 	ELSIF (cnt = "0010") THEN
-		output <= "1101101";
+		output <= "0010010";
 	ELSIF (cnt = "0011") THEN
-		output <= "1111001";
+		output <= "0000110";
 	ELSIF (cnt = "0100") THEN
-		output <= "0110011";
+		output <= "1001100";
 	ELSIF (cnt = "0101") THEN
-		output <= "1011011";
+		output <= "0100100";
 	ELSIF (cnt = "0110") THEN
-		output <= "1011111";
+		output <= "0100000";
 	ELSIF (cnt = "0111") THEN
-		output <= "1110000";
+		output <= "0001111";
 	ELSIF (cnt = "1000") THEN
-		output <= "1111111";
-	ELSIF (cnt = "1001") THEN
-		output <= "1111011";
-	ELSE
 		output <= "0000000";
+	ELSIF (cnt = "1001") THEN
+		output <= "0000100";
+	ELSE
+		output <= "1111111";
+		n_ena <= '1';
 		
 	END IF; 
 	 
