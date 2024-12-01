@@ -31,31 +31,38 @@ PROCESS (clk, rstn, ena)
 		cnt <= cnt;
 	END IF;
 	
-	n_ena <= '0';
-	
 	IF (cnt = "0000") THEN
 		output <= "0000001";
+		n_ena <= '0';
 	ELSIF (cnt = "0001") THEN
 		output <= "1001111";
+		n_ena <= '0';
 	ELSIF (cnt = "0010") THEN
 		output <= "0010010";
+		n_ena <= '0';
 	ELSIF (cnt = "0011") THEN
 		output <= "0000110";
+		n_ena <= '0';
 	ELSIF (cnt = "0100") THEN
 		output <= "1001100";
+		n_ena <= '0';
 	ELSIF (cnt = "0101") THEN
 		output <= "0100100";
+		n_ena <= '0';
 	ELSIF (cnt = "0110") THEN
 		output <= "0100000";
+		n_ena <= '0';
 	ELSIF (cnt = "0111") THEN
 		output <= "0001111";
+		n_ena <= '0';
 	ELSIF (cnt = "1000") THEN
 		output <= "0000000";
+		n_ena <= '0';
 	ELSIF (cnt = "1001") THEN
 		output <= "0000100";
+		n_ena <= '1';
 	ELSE
 		output <= "1111111";
-		n_ena <= '1';
 		
 	END IF; 
 	 
