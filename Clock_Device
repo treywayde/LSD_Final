@@ -19,19 +19,36 @@ PROCESS (clk, rstn, ena)
 	IF (rstn = '0') THEN
 		cnt <= (OTHERS => '0');
 	ELSIF (clk'EVENT AND clk = '1') THEN
-		IF (ena = '1') THEN
-			IF (cnt = x"FAF07F") THEN -- 4b4c3f(hex) = 4,999,999 (decimal)
+		IF (ena = '0') THEN
+			IF (cnt = x"FAF07F") THEN -- "50,000,000 in hex, so enable is 1 once a second
+				cnt <= x"000000";
+			ELSE 
+				cnt <= cnt + 1;
+			END IF;
+		ELSE
+			IF (cnt = x"186A0") THEN 
 				cnt <= x"000000";
 			ELSE
 				cnt <= cnt + 1;
+			END IF;
 		END IF;
 	ELSE
 		cnt <= cnt;
-		END IF; -- clk
+	END IF; -- clk
+	
+	IF(ena = '0') THEN
+		IF (cnt = x"FAF07F") THEN
+				pulse_10Hz <= '1';
+		ELSE 
+			pulse_10Hz <= '0';
+		END IF;
+	ELSE
+		IF (cnt = x"186A0") THEN
+				pulse_10Hz <= '1';
+		ELSE 
+			pulse_10Hz <= '0';
+		END IF;
 	END IF;
-END PROCESS;
 
-	WITH cnt SELECT
-		pulse_10Hz <= '1' WHEN x"FAF07F",
-		'0' WHEN OTHERS;
+END PROCESS;
 END behavioral;
