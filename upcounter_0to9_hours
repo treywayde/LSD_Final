@@ -1,0 +1,83 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.std_logic_unsigned.ALL;
+
+ENTITY upcounter_0to9_hours IS
+PORT
+ (
+	clk, rstn, ena : IN STD_LOGIC;
+	output : OUT STD_LOGIC_VECTOR(6 downto 0);
+	n_ena : OUT STD_LOGIC
+);
+END upcounter_0to9_hours;
+
+ARCHITECTURE behavioral OF upcounter_0to9_hours IS
+	signal cnt : STD_LOGIC_VECTOR(3 downto 0);
+	signal cnt_2 : STD_LOGIC_VECTOR(3 downto 0); 
+BEGIN
+
+PROCESS (clk, rstn, ena)
+	BEGIN
+	IF (rstn = '0') THEN
+		cnt <= (OTHERS => '0');
+		cnt_2 <= (OTHERS => '0');
+	ELSIF (clk'EVENT AND clk = '1') THEN
+		IF (ena = '1') THEN
+			cnt <= cnt + 1;
+			IF (cnt = "1001") THEN
+				cnt <= "0000";
+			END IF;
+			IF (cnt <= "0100") THEN
+				cnt_2 <= cnt_2 + 1;
+			END IF; 
+			IF (cnt_2 = "0011") THEN
+				cnt <= "0000";
+				cnt_2 <= "0000";
+			END IF;
+		END IF;
+	ELSE
+		cnt <= cnt;
+	END IF;
+	
+	IF (cnt = "0000") THEN
+		output <= "0000001";
+		n_ena <= '0';
+	ELSIF (cnt = "0001") THEN
+		output <= "1001111";
+		n_ena <= '0';
+	ELSIF (cnt = "0010") THEN
+		output <= "0010010";
+		n_ena <= '0';
+	ELSIF (cnt = "0011") THEN
+		output <= "0000110";
+		n_ena <= '0';
+	ELSIF (cnt = "0100") THEN
+		output <= "1001100";
+		n_ena <= '0';
+	ELSIF (cnt = "0101") THEN
+		output <= "0100100";
+		n_ena <= '0';
+	ELSIF (cnt = "0110") THEN
+		output <= "0100000";
+		n_ena <= '0';
+	ELSIF (cnt = "0111") THEN
+		output <= "0001111";
+		n_ena <= '0';
+	ELSIF (cnt = "1000") THEN
+		output <= "0000000";
+		n_ena <= '0';
+	ELSIF (cnt = "1001") THEN
+		output <= "0000100";
+		n_ena <= '1';
+	ELSE
+		output <= "1111111";
+		
+	END IF; 
+	 
+
+	
+	
+	
+END PROCESS;
+
+END behavioral;
