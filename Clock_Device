@@ -11,7 +11,7 @@ PORT
 END pulse_10Hz_enable;
 
 ARCHITECTURE behavioral OF pulse_10Hz_enable IS
-	signal cnt : STD_LOGIC_VECTOR(23 downto 0);
+	signal cnt : STD_LOGIC_VECTOR(27 downto 0);
 BEGIN
 
 PROCESS (clk, rstn, ena)
@@ -20,14 +20,14 @@ PROCESS (clk, rstn, ena)
 		cnt <= (OTHERS => '0');
 	ELSIF (clk'EVENT AND clk = '1') THEN
 		IF (ena = '0') THEN
-			IF (cnt = x"FAF07F") THEN -- "50,000,000 in hex, so enable is 1 once a second
-				cnt <= x"000000";
+			IF (cnt = x"2FAF07F") THEN -- "50,000,000 in hex, so enable is 1 once a second
+				cnt <= x"0000000";
 			ELSE 
 				cnt <= cnt + 1;
 			END IF;
 		ELSE
 			IF (cnt = x"186A0") THEN 
-				cnt <= x"000000";
+				cnt <= x"0000000";
 			ELSE
 				cnt <= cnt + 1;
 			END IF;
@@ -37,7 +37,7 @@ PROCESS (clk, rstn, ena)
 	END IF; -- clk
 	
 	IF(ena = '0') THEN
-		IF (cnt = x"FAF07F") THEN
+		IF (cnt = x"2FAF07F") THEN
 				pulse_10Hz <= '1';
 		ELSE 
 			pulse_10Hz <= '0';
